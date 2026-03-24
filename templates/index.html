@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reinforcement Learning - Interactive GridWorld</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="container sidebar-layout">
+        <!-- Sidebar for Controls -->
+        <aside class="sidebar">
+            <header class="header">
+                <h1>GridWorld RL</h1>
+                <p id="current-size-info"
+                    style="font-size: 0.8rem; color: var(--accent-color); font-weight: 700; margin-top: 5px;"></p>
+            </header>
+
+            <section id="dimension-section" class="controls">
+                <div class="input-group">
+                    <label for="grid-size">Dimension (5-9):</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="number" id="grid-size" value="5" min="5" max="9">
+                        <button id="generate-btn" class="primary">Generate Grid</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="env-setup-section" class="mode-selector-vertical">
+                <button class="mode-btn active" data-mode="start">Start Point (Green)</button>
+                <button class="mode-btn" data-mode="end">End Point (Red)</button>
+                <button class="mode-btn" data-mode="obstacle">Obstacle (Grey)</button>
+            </section>
+
+            <section class="status-panel-vertical">
+                <div class="status-item">
+                    <div class="marker start"></div>
+                    <span id="start-status">Start: Not Set</span>
+                </div>
+                <div class="status-item">
+                    <div class="marker end"></div>
+                    <span id="end-status">End: Not Set</span>
+                </div>
+                <div class="status-item">
+                    <div class="marker obstacle"></div>
+                    <span id="obstacle-info">Obst: 0/0</span>
+                </div>
+            </section>
+
+            <!-- Mini Map Preview after Locking -->
+            <div id="mini-map-block"
+                style="display: none; flex-direction: column; align-items: center; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.2);">
+                <p
+                    style="font-size: 0.7rem; color: var(--accent-color); font-weight: 700; margin-bottom: 5px; text-transform: uppercase;">
+                    Environment View</p>
+                <div id="grid-mini" class="grid-container mini"></div>
+            </div>
+
+            <section id="action-buttons" class="button-stack">
+                <button id="confirm-env-btn" class="primary">Lock Environment</button>
+                <div id="policy-setup-section" style="display: none; width: 100%;">
+                    <button id="gen-policy-btn" class="primary"
+                        style="background-color: #f7768e; width: 100%; margin-bottom: 10px;">Generate Policy</button>
+                    <button id="auto-btn" class="primary"
+                        style="background-color: #1f6feb; width: 100%; margin-bottom: 10px;">Policy Evaluation</button>
+                    <button id="vi-btn" class="primary"
+                        style="background-color: #8957e5; width: 100%; margin-bottom: 10px;">Value Iteration</button>
+                </div>
+                <button id="reset-btn" style="width: 100%;">Hard Reset</button>
+                <button id="stop-btn" style="display: none; background-color: var(--end-color); width: 100%;">Stop
+                    Animation</button>
+            </section>
+
+            <footer class="instructions">
+                <p id="inst-text">1. Set Start, End and Obstacles. 2. Lock Environment.</p>
+            </footer>
+        </aside>
+
+        <!-- Main Workspace for Dual Grids -->
+        <main class="main-content">
+            <div class="result-block" id="block-pe" style="display: none;">
+                <h3>Policy Evaluation</h3>
+                <div id="grid-pe" class="grid-container"></div>
+                <p class="result-status" id="pe-status-text"></p>
+            </div>
+
+            <div class="result-block" id="block-vi" style="display: none;">
+                <h3>Value Iteration</h3>
+                <div id="grid-vi" class="grid-container"></div>
+                <p class="result-status" id="vi-status-text"></p>
+            </div>
+
+            <!-- Initial Setup Grid (Hidden after lock) -->
+            <div class="result-block" id="block-setup">
+                <h3>Environment Setup</h3>
+                <div id="grid-setup" class="grid-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>
